@@ -65,7 +65,11 @@ except Exception:
     st = None
 
 # ML
-from sklearn.ensemble import RandomForestClassifier
+try:
+    from sklearn.ensemble import RandomForestClassifier
+except Exception as e:
+    RandomForestClassifier = None
+    print("[WARN] scikit-learn not available — ML model disabled.")
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score
 import joblib
@@ -408,4 +412,6 @@ if __name__ == '__main__':
         except Exception as e:
             print(f"Smoke tests encountered an error: {e}")
             raise
+
+
 
