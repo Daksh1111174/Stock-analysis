@@ -243,9 +243,27 @@ def prepare_features(df):
 
 
 def train_model(X, y):
-    # ML disabled if train_test_split or RandomForestClassifier missing
+    """Train ML model if sklearn is available, otherwise return None."""
+    # Abort if ML dependencies missing
     if train_test_split is None or RandomForestClassifier is None:
         print("[WARN] ML disabled — falling back to rule-based classifier.")
+        return None
+
+    # Normal sklearn training path
+    unique_labels = np.unique(y)
+    if len(unique_labels) < 2:
+        print("[WARN] Not enough class variation to train model.")
+        return None
+
+    try:
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42, stratify=y
+        )
+        clf = RandomForestClassifier(n_estimators=200, random_state=42)
+        clf.fit(X_train, y_train)
+        return clf
+    except Exception as e:
+        print(f"[ERROR] Training failed: {e}")
         return None
 
     def train_model(X, y):
@@ -431,6 +449,8 @@ if __name__ == '__main__':
         except Exception as e:
             print(f"Smoke tests encountered an error: {e}")
             raise
+
+
 
 
 
