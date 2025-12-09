@@ -242,7 +242,13 @@ def prepare_features(df):
     return X, y, cols
 
 
-def train_model(X, y):
+def train_model
+# ML disabled if train_test_split or RandomForestClassifier missing
+    if train_test_split is None or RandomForestClassifier is None:
+        print("[WARN] ML disabled — falling back to rule-based classifier.")
+        return None
+
+    def train_model(X, y):
     # Simple check
     unique_labels = np.unique(y)
     if unique_labels.size < 2:
@@ -425,6 +431,8 @@ if __name__ == '__main__':
         except Exception as e:
             print(f"Smoke tests encountered an error: {e}")
             raise
+
+
 
 
 
