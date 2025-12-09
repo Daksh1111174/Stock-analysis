@@ -75,7 +75,12 @@ try:
 except Exception:
     train_test_split = None
     print("[WARN] scikit-learn model_selection not available — training disabled.")
-from sklearn.metrics import classification_report, accuracy_score
+try:
+    from sklearn.metrics import classification_report, accuracy_score
+except Exception:
+    classification_report = None
+    accuracy_score = None
+    print("[WARN] scikit-learn metrics not available — evaluation disabled.")
 import joblib
 
 MODEL_PATH = "stock_rf_model.joblib"
@@ -416,6 +421,8 @@ if __name__ == '__main__':
         except Exception as e:
             print(f"Smoke tests encountered an error: {e}")
             raise
+
+
 
 
 
