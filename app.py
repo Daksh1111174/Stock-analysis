@@ -81,7 +81,11 @@ except Exception:
     classification_report = None
     accuracy_score = None
     print("[WARN] scikit-learn metrics not available — evaluation disabled.")
-import joblib
+try:
+    import joblib
+except Exception:
+    joblib = None
+    print("[WARN] joblib not available — model save/load disabled.")
 
 MODEL_PATH = "stock_rf_model.joblib"
 
@@ -421,6 +425,8 @@ if __name__ == '__main__':
         except Exception as e:
             print(f"Smoke tests encountered an error: {e}")
             raise
+
+
 
 
 
